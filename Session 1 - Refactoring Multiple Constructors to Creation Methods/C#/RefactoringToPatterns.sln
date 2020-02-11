@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ReplaceConstructors.Bef
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ChainConstructors.Before", "MPG.ChainConstructors.Before\MPG.ChainConstructors.Before.csproj", "{B2EBC2F1-8230-43F3-8AD7-B2081549786A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ChainConstructors.After", "MPG.ChainConstructors.After\MPG.ChainConstructors.After.csproj", "{59A445AB-F106-44E0-80FC-B9863C96F8E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ReplaceConstructors.After", "MPG.ReplaceConstructors.After\MPG.ReplaceConstructors.After.csproj", "{BA03DA67-A232-4881-910D-96E3C7834CF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{B2EBC2F1-8230-43F3-8AD7-B2081549786A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2EBC2F1-8230-43F3-8AD7-B2081549786A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2EBC2F1-8230-43F3-8AD7-B2081549786A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59A445AB-F106-44E0-80FC-B9863C96F8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59A445AB-F106-44E0-80FC-B9863C96F8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59A445AB-F106-44E0-80FC-B9863C96F8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59A445AB-F106-44E0-80FC-B9863C96F8E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA03DA67-A232-4881-910D-96E3C7834CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA03DA67-A232-4881-910D-96E3C7834CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA03DA67-A232-4881-910D-96E3C7834CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA03DA67-A232-4881-910D-96E3C7834CF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
