@@ -1,4 +1,4 @@
-﻿namespace ChainConstructors.Before
+﻿namespace MPG.ChainConstructors.Before
 {
     class RevolvingTermROC : CapitalStrategy
     {

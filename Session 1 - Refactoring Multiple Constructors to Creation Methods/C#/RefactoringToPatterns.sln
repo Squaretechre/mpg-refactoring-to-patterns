@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceConstructors", "ReplaceConstructors\ReplaceConstructors.csproj", "{3B3E5B88-4E46-4939-964D-71881625F7D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ReplaceConstructors.Before", "MPG.ReplaceConstructors.Before\MPG.ReplaceConstructors.Before.csproj", "{3B3E5B88-4E46-4939-964D-71881625F7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainConstructors", "ChainConstructors\ChainConstructors.csproj", "{B2EBC2F1-8230-43F3-8AD7-B2081549786A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.ChainConstructors.Before", "MPG.ChainConstructors.Before\MPG.ChainConstructors.Before.csproj", "{B2EBC2F1-8230-43F3-8AD7-B2081549786A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

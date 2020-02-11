@@ -1,4 +1,4 @@
-﻿namespace ReplaceConstructors.Before
+﻿namespace MPG.ReplaceConstructors.Before
 {
     class CapitalStrategyTermLoan : CapitalStrategy
     {
