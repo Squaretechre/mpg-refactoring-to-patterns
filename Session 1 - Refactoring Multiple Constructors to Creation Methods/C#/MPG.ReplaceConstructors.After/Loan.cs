@@ -11,19 +11,7 @@
         private readonly DateTime? maturity;
         private readonly DateTime? expiry;
 
-        public Loan(double commitment, int riskRating, DateTime? maturity)
-            : this(commitment, 0.0, riskRating, maturity, null) {}
-
-        public Loan(double commitment, int riskRating, DateTime? maturity, DateTime? expiry)
-            : this(commitment, 0.0, riskRating, maturity, expiry) {}
-        
-        public Loan(double commitment, double outstanding, int riskRating, DateTime? maturity, DateTime? expiry)
-            : this(null, commitment, outstanding, riskRating, maturity, expiry) {}
-        
-        public Loan(CapitalStrategy capitalStrategy, double commitment, int riskRating, DateTime? maturity, DateTime? expiry)
-            : this(capitalStrategy, commitment, 0.0, riskRating, maturity, expiry) {}
-        
-        public Loan(CapitalStrategy capitalStrategy,
+        private Loan(CapitalStrategy capitalStrategy,
             double commitment,
             double outstanding,
             int riskRating,
@@ -51,6 +39,26 @@
             if (capitalStrategy is CapitalStrategyRevolver) return "Revolver loan";
             if (capitalStrategy is CapitalStrategyRCTL) return "RCTL loan";
             throw new InvalidOperationException();
+        }
+
+        public static Loan CreateTermLoan(double commitment, int riskRating, DateTime? maturity)
+        {
+            return new Loan(new CapitalStrategyTermLoan(), commitment, 0.0, riskRating, maturity, null);
+        }
+
+        public static Loan CreateRCTL(double commitment, double outstanding, int riskRating, DateTime? maturity, DateTime? expiry)
+        {
+            return new Loan(new CapitalStrategyRCTL(), commitment, outstanding, riskRating, maturity, expiry);
+        }
+
+        public static Loan CreateRevolver(double commitment, double outstanding, int riskRating, DateTime? expiry)
+        {
+            return CreateRevolver(new CapitalStrategyRevolver(), commitment, outstanding, riskRating, expiry);
+        }
+
+        public static Loan CreateRevolver(CapitalStrategyRevolver capitalStrategy, double commitment, double outstanding, int riskRating, DateTime? expiry)
+        {
+            return new Loan(capitalStrategy, commitment, outstanding, riskRating, null, expiry);
         }
     }
 }
