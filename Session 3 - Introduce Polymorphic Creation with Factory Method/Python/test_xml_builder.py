@@ -1,21 +1,11 @@
-from unittest import TestCase
+from abstract_builder_test import AbstractBuilderTest
 from xml_builder import XMLBuilder
 
 
-class TestXMLBuilder(TestCase):
+class TestXMLBuilder(AbstractBuilderTest):
     def test_add_above_root(self):
-        invalid_result = """
-        <orders>
-            <order>
-            </order>
-        </orders>
-        <customer>
-        </customer>
-        """
+        self.add_above_root()
 
-        builder = XMLBuilder("orders")
-        builder.add_below("order")
-
-        with self.assertRaises(RuntimeError):
-            builder.add_above("customer")
+    def create_builder(self, root_name):
+        return XMLBuilder(root_name)
 

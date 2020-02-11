@@ -1,7 +1,7 @@
 class XMLBuilder:
 
-    def __init__(self, node):
-        self._node = node
+    def __init__(self, root_name):
+        self._node = root_name
 
     def add_below(self, node):
         pass
