@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.IntroducePolymorphicCreation.Before", "MPG.IntroducePolymorphicCreation.Before\MPG.IntroducePolymorphicCreation.Before.csproj", "{EBC37209-44B7-43C9-AC0F-589AA6D74D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPG.IntroducePolymorphicCreation.After", "MPG.IntroducePolymorphicCreation.After\MPG.IntroducePolymorphicCreation.After.csproj", "{0CB96B86-E67E-4029-95FA-4794B2613B65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBC37209-44B7-43C9-AC0F-589AA6D74D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBC37209-44B7-43C9-AC0F-589AA6D74D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBC37209-44B7-43C9-AC0F-589AA6D74D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBC37209-44B7-43C9-AC0F-589AA6D74D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CB96B86-E67E-4029-95FA-4794B2613B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CB96B86-E67E-4029-95FA-4794B2613B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CB96B86-E67E-4029-95FA-4794B2613B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CB96B86-E67E-4029-95FA-4794B2613B65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB983CBD-E8AA-403F-9F73-5BCB0A57DBD8}
+	EndGlobalSection
+EndGlobal
