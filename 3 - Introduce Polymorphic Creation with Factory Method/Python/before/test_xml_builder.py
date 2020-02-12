@@ -1,8 +1,8 @@
 from unittest import TestCase
-from dom_builder import DOMBuilder
+from before.xml_builder import XMLBuilder
 
 
-class TestDOMBuilder(TestCase):
+class TestXMLBuilder(TestCase):
     def test_add_above_root(self):
         invalid_result = """
         <orders>
@@ -13,7 +13,7 @@ class TestDOMBuilder(TestCase):
         </customer>
         """
 
-        builder = DOMBuilder("orders")
+        builder = XMLBuilder("orders")
         builder.add_below("order")
 
         with self.assertRaises(RuntimeError):
