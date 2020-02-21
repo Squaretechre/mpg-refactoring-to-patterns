@@ -6,11 +6,8 @@
 
 class TestXmlBuilder : public ITestBuilder
 {
-public:
-  void TestAddAboveRoot();
 private:
-  std::unique_ptr<IOutputBuilder> Builder;
-  std::unique_ptr<IOutputBuilder> CreateBuilder(std::string root);
+  std::unique_ptr<IOutputBuilder> CreateBuilder(std::string root) override;
 };
 
 #endif
