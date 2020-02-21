@@ -1,11 +1,10 @@
 #ifndef TESTDOMBUILDER_H
 #define TESTDOMBUILDER_H
 
-#include <gtest/gtest.h>
-
 #include "IOutputBuilder.h"
+#include "ITestBuilder.h"
 
-class TestDomBuilder : public testing::Test
+class TestDomBuilder : public ITestBuilder
 {
 public:
   void TestAddAboveRoot();

@@ -1,11 +1,10 @@
 #ifndef TESTXMLBUILDER_H
 #define TESTXMLBUILDER_H
 
-#include <gtest/gtest.h>
-
 #include "IOutputBuilder.h"
+#include "ITestBuilder.h"
 
-class TestXmlBuilder : public testing::Test
+class TestXmlBuilder : public ITestBuilder
 {
 public:
   void TestAddAboveRoot();
