@@ -3,14 +3,15 @@
 
 #include <gtest/gtest.h>
 
-#include "XmlBuilder.h"
+#include "IOutputBuilder.h"
 
 class TestXmlBuilder : public testing::Test
 {
 public:
   void TestAddAboveRoot();
 private:
-  std::unique_ptr<XmlBuilder> Builder;
+  std::unique_ptr<IOutputBuilder> Builder;
+  std::unique_ptr<IOutputBuilder> CreateBuilder(std::string root);
 };
 
 #endif
