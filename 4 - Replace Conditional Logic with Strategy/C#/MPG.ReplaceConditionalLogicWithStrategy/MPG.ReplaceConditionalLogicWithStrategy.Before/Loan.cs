@@ -2,8 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// 1. create class CapitalStrategy
+// 2. declare Capital in CapitalStrategy
+// 3. copy Capital and anything easy from Loan to CapitalStrategy
+// 4. figure out what is needed from a Loan instance, decide next move, context or data
+// 5. add getter methods for data that is needed from the context
+
+
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
+    public class CapitalStrategy
+    {
+        public double Capital(Loan loan)
+        {
+            if (!loan.GetExpiry().HasValue && loan.GetMaturity().HasValue)
+            {
+                // term loan
+                return loan.GetCommitment() * loan.Duration() * RiskFactor(loan);
+            }
+
+            if (loan.GetExpiry().HasValue && !loan.GetMaturity().HasValue)
+            {
+                if (loan.GetUnusedPercentage() != 1.0)
+                {
+                    // advised line
+                    return loan.GetCommitment() * loan.GetUnusedPercentage() * loan.Duration() * RiskFactor(loan);
+                }
+                else
+                {
+                    // revolver
+                    return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
+                           + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
+                }
+            }
+
+            return 0.0;
+        }
+
+        private static double RiskFactor(Loan loan)
+        {
+            return RiskFactors.ForRating(loan.GetRiskRating());
+        }
+
+        private static double UnusedRiskFactor(Loan loan)
+        {
+            return UnusedRiskFactors.ForRating(loan.GetRiskRating());
+        }
+    }
+
     public class Loan
     {
         private const int MillisPerDay = 86400000;
@@ -36,6 +82,26 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             _expiry = expiry;
             _start = start;
             _today = today;
+        }
+
+        public double GetCommitment()
+        {
+            return _commitment;
+        }
+
+        public DateTime? GetExpiry()
+        {
+            return _expiry;
+        }
+
+        public DateTime? GetMaturity()
+        {
+            return _maturity;
+        }
+
+        public int GetRiskRating()
+        {
+            return _riskRating;
         }
 
         internal void SetUnusedPercentage(double unusedPercentage)
@@ -88,17 +154,17 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             _payments.Add(new Payment(amount, date));
         }
 
-        private double OutstandingRiskAmount()
+        public double OutstandingRiskAmount()
         {
             return _outstanding;
         }
 
-        private double GetUnusedPercentage()
+        public double GetUnusedPercentage()
         {
             return _unusedPercentage;
             }
 
-        private double UnusedRiskAmount()
+        public double UnusedRiskAmount()
         {
             return _commitment - _outstanding;
         }
