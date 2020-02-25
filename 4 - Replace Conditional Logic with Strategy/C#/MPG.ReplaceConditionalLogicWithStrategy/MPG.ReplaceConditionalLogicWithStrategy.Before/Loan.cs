@@ -115,7 +115,8 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             DateTime? maturity, 
             DateTime? expiry, 
             DateTime start,
-            DateTime? today)
+            DateTime? today, 
+            CapitalStrategy capitalStrategy)
         {
             _commitment = commitment;
             _riskRating = riskRating;
@@ -125,7 +126,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             _expiry = expiry;
             _start = start;
             _today = today;
-            _capitalStrategy = new CapitalStrategy();
+            _capitalStrategy = capitalStrategy;
         }
 
         public double GetCommitment()
@@ -200,18 +201,18 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public static Loan NewTermLoan(int commitment, DateTime start, DateTime maturity, int riskRating)
         {
-            return new Loan(commitment, commitment, riskRating, maturity, null, start, null);
+            return new Loan(commitment, commitment, riskRating, maturity, null, start, null, new CapitalStrategy());
         }
 
         public static Loan NewRevolver(double commitment, DateTime start, DateTime expiry, int riskRating)
         {
-            return new Loan(commitment, 0, riskRating, null, expiry, start, null);
+            return new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategy());
         }
 
         public static Loan NewAdvisedLine(double commitment, DateTime start, DateTime expiry, int riskRating)
         {
             if (riskRating > 3) return null;
-            var advisedLine = new Loan(commitment, 0, riskRating, null, expiry, start, null);
+            var advisedLine = new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategy());
             advisedLine.SetUnusedPercentage(0.1);
             return advisedLine;
         }
