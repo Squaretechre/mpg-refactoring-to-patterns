@@ -53,25 +53,16 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public virtual double Capital(Loan loan)
         {
-            if (!loan.GetExpiry().HasValue && loan.GetMaturity().HasValue)
+            if (loan.GetUnusedPercentage() != 1.0)
             {
-                // term loan
-                return loan.GetCommitment() * loan.Duration() * RiskFactor(loan);
+                // advised line
+                return loan.GetCommitment() * loan.GetUnusedPercentage() * loan.Duration() * RiskFactor(loan);
             }
-
-            if (loan.GetExpiry().HasValue && !loan.GetMaturity().HasValue)
+            else
             {
-                if (loan.GetUnusedPercentage() != 1.0)
-                {
-                    // advised line
-                    return loan.GetCommitment() * loan.GetUnusedPercentage() * loan.Duration() * RiskFactor(loan);
-                }
-                else
-                {
-                    // revolver
-                    return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
-                           + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
-                }
+                // revolver
+                return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
+                       + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
             }
 
             return 0.0;
@@ -79,16 +70,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public virtual double Duration(Loan loan)
         {
-            if (!loan.GetExpiry().HasValue & loan.GetMaturity().HasValue)
-            {
-                return WeightedAverageDuration(loan);
-            }
-            else if (loan.GetExpiry().HasValue && !loan.GetMaturity().HasValue)
-            {
-                return YearsTo(loan.GetExpiry().Value, loan);
-            }
-
-            return 0.0;
+            return YearsTo(loan.GetExpiry().Value, loan);
         }
 
         protected static double RiskFactor(Loan loan)
@@ -141,13 +123,13 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         private readonly CapitalStrategy _capitalStrategy;
 
         public Loan(
-            double commitment, 
+            double commitment,
             double outstanding,
             int riskRating,
-            DateTime? maturity, 
-            DateTime? expiry, 
+            DateTime? maturity,
+            DateTime? expiry,
             DateTime start,
-            DateTime? today, 
+            DateTime? today,
             CapitalStrategy capitalStrategy)
         {
             _commitment = commitment;
@@ -224,7 +206,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         public double GetUnusedPercentage()
         {
             return _unusedPercentage;
-            }
+        }
 
         public double UnusedRiskAmount()
         {
@@ -233,7 +215,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public static Loan NewTermLoan(int commitment, DateTime start, DateTime maturity, int riskRating)
         {
-            return new Loan(commitment, commitment, riskRating, maturity, null, start, null, new CapitalStrategy());
+            return new Loan(commitment, commitment, riskRating, maturity, null, start, null, new CapitalStrategyTermLoan());
         }
 
         public static Loan NewRevolver(double commitment, DateTime start, DateTime expiry, int riskRating)
