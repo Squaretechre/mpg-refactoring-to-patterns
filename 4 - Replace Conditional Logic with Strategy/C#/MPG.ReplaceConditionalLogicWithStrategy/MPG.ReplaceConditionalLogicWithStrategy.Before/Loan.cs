@@ -16,9 +16,18 @@ using System.Linq;
 // 12. Create CapitalStrategyTermLoan, move WeightedAverageDuration to it
 // 13. Swap CapitalStrategy for CapitalStrategyTerm loan in factory method
 // 14. Delete WeightedAverageDuration from CapitalStrategy as it's only needed for term loans
+// 15. Create CapitalStrategyAdvisedLine, move Capital logic, replace in factory method, remove unused code
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
+    public class CapitalStrategyAdvisedLine : CapitalStrategy
+    {
+        public override double Capital(Loan loan)
+        {
+            return loan.GetCommitment() * loan.GetUnusedPercentage() * loan.Duration() * RiskFactor(loan);
+        }
+    }
+
     public class CapitalStrategyTermLoan : CapitalStrategy
     {
         public override double Capital(Loan loan)
@@ -53,19 +62,9 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public virtual double Capital(Loan loan)
         {
-            if (loan.GetUnusedPercentage() != 1.0)
-            {
-                // advised line
-                return loan.GetCommitment() * loan.GetUnusedPercentage() * loan.Duration() * RiskFactor(loan);
-            }
-            else
-            {
-                // revolver
-                return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
-                       + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
-            }
-
-            return 0.0;
+            // revolver
+            return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
+                   + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
         }
 
         public virtual double Duration(Loan loan)
@@ -226,7 +225,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         public static Loan NewAdvisedLine(double commitment, DateTime start, DateTime expiry, int riskRating)
         {
             if (riskRating > 3) return null;
-            var advisedLine = new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategy());
+            var advisedLine = new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategyAdvisedLine());
             advisedLine.SetUnusedPercentage(0.1);
             return advisedLine;
         }
