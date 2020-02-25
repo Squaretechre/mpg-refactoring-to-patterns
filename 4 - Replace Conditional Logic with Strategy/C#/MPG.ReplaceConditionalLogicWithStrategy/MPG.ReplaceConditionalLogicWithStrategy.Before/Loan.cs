@@ -17,9 +17,20 @@ using System.Linq;
 // 13. Swap CapitalStrategy for CapitalStrategyTerm loan in factory method
 // 14. Delete WeightedAverageDuration from CapitalStrategy as it's only needed for term loans
 // 15. Create CapitalStrategyAdvisedLine, move Capital logic, replace in factory method, remove unused code
+// 16. Create CapitalStrategyRevolver, move Capital logic, replace in factory method, remove unused code
+// 17. Make CapitalStrategy an abstract class, make Capital abstract
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
+    public class CapitalStrategyRevolver : CapitalStrategy
+    {
+        public override double Capital(Loan loan)
+        {
+            return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
+                   + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
+        }
+    }
+
     public class CapitalStrategyAdvisedLine : CapitalStrategy
     {
         public override double Capital(Loan loan)
@@ -55,17 +66,12 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         }
     }
 
-    public class CapitalStrategy
+    public abstract class CapitalStrategy
     {
         private const int MillisPerDay = 86400000;
         private const int DaysPerYear = 365;
 
-        public virtual double Capital(Loan loan)
-        {
-            // revolver
-            return (loan.OutstandingRiskAmount() * loan.Duration() * RiskFactor(loan))
-                   + (loan.UnusedRiskAmount() * loan.Duration() * UnusedRiskFactor(loan));
-        }
+        public abstract double Capital(Loan loan);
 
         public virtual double Duration(Loan loan)
         {
@@ -219,7 +225,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public static Loan NewRevolver(double commitment, DateTime start, DateTime expiry, int riskRating)
         {
-            return new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategy());
+            return new Loan(commitment, 0, riskRating, null, expiry, start, null, new CapitalStrategyRevolver());
         }
 
         public static Loan NewAdvisedLine(double commitment, DateTime start, DateTime expiry, int riskRating)
