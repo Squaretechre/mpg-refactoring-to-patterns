@@ -6,8 +6,8 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
     public class Loan
     {
-        private const int MILLIS_PER_DAY = 86400000;
-        private const int DAYS_PER_YEAR = 365;
+        private const int MillisPerDay = 86400000;
+        private const int DaysPerYear = 365;
 
         private readonly double _commitment;
         private readonly int _riskRating;
@@ -75,7 +75,8 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
                 else
                 {
                     // revolver
-                    return (OutstandStandingRiskAmount() * Duration() * RiskFactor()) + (UnusedRiskAmount() * Duration() * UnusedRiskFactor());
+                    return (OutstandingRiskAmount() * Duration() * RiskFactor()) 
+                           + (UnusedRiskAmount() * Duration() * UnusedRiskFactor());
                 }
             }
 
@@ -87,7 +88,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             _payments.Add(new Payment(amount, date));
         }
 
-        private double OutstandStandingRiskAmount()
+        private double OutstandingRiskAmount()
         {
             return _outstanding;
         }
@@ -95,7 +96,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         private double GetUnusedPercentage()
         {
             return _unusedPercentage;
-        }
+            }
 
         private double UnusedRiskAmount()
         {
@@ -118,10 +119,10 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         private double YearsTo(DateTime endDate)
         {
-            var beginDate = _today.HasValue ? _today.Value : _start;
-            var beginDateMilliSeconds = new DateTimeOffset(beginDate).ToUnixTimeMilliseconds();
-            var endDateMilliSeconds = new DateTimeOffset(endDate).ToUnixTimeMilliseconds();
-            return ((endDateMilliSeconds - beginDateMilliSeconds) / MILLIS_PER_DAY) / DAYS_PER_YEAR;
+            var beginDate = _today ?? _start;
+            var beginDateMilliseconds = new DateTimeOffset(beginDate).ToUnixTimeMilliseconds();
+            var endDateMilliseconds = new DateTimeOffset(endDate).ToUnixTimeMilliseconds();
+            return ((endDateMilliseconds - beginDateMilliseconds) / MillisPerDay) / DaysPerYear;
         }
 
         private double RiskFactor()

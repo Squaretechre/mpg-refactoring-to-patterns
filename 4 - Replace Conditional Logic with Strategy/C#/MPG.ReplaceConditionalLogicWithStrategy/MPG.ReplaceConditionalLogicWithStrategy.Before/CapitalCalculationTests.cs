@@ -5,15 +5,15 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
     public class CapitalCalculationTests
     {
-        private const int HIGH_RISK_RATING = 1;
-        private const int LOAN_AMOUNT = 10000;
+        private const int HighRiskRating = 1;
+        private const int LoanAmount = 10000;
 
         [Fact]
         public void capital_term_loan()
         {
             var start = new DateTime(2003, 11, 20);
             var maturity = new DateTime(2006, 11, 20);
-            var termLoan = Loan.NewTermLoan(LOAN_AMOUNT, start, maturity, HIGH_RISK_RATING);
+            var termLoan = Loan.NewTermLoan(LoanAmount, start, maturity, HighRiskRating);
 
             termLoan.Payment(1000.00, new DateTime(2004, 11, 20));
             termLoan.Payment(1000.00, new DateTime(2005, 11, 20));
@@ -28,7 +28,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         {
             var start = new DateTime(2003, 11, 20);
             var expiry = new DateTime(2005, 11, 20);
-            var loan = Loan.NewAdvisedLine(LOAN_AMOUNT, start, expiry, HIGH_RISK_RATING);
+            var loan = Loan.NewAdvisedLine(LoanAmount, start, expiry, HighRiskRating);
 
             Assert.Equal(2, loan.Duration());
             Assert.Equal(21, loan.Capital());
@@ -39,7 +39,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         {
             var start = new DateTime(2003, 11, 20);
             var expiry = new DateTime(2006, 11, 20);
-            var loan = Loan.NewRevolver(LOAN_AMOUNT, start, expiry, HIGH_RISK_RATING);
+            var loan = Loan.NewRevolver(LoanAmount, start, expiry, HighRiskRating);
 
             Assert.Equal(3, loan.Duration());
             Assert.Equal(315, loan.Capital());
