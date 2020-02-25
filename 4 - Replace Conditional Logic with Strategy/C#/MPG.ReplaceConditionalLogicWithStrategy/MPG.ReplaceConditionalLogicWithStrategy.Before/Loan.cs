@@ -106,6 +106,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         private readonly DateTime _start;
         private readonly DateTime? _today;
         private double _unusedPercentage;
+        private readonly CapitalStrategy _capitalStrategy;
 
         public Loan(
             double commitment, 
@@ -124,6 +125,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             _expiry = expiry;
             _start = start;
             _today = today;
+            _capitalStrategy = new CapitalStrategy();
         }
 
         public double GetCommitment()
@@ -168,12 +170,12 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public double Duration()
         {
-            return new CapitalStrategy().Duration(this);
+            return _capitalStrategy.Duration(this);
         }
 
         public double Capital()
         {
-            return new CapitalStrategy().Capital(this);
+            return _capitalStrategy.Capital(this);
         }
 
         public void Payment(double amount, DateTime date)
