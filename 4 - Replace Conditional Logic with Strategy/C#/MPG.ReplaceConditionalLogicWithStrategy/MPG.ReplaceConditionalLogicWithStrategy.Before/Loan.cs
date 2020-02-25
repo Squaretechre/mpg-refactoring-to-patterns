@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// 1. create class CapitalStrategy
-// 2. declare Capital in CapitalStrategy
-// 3. copy Capital and anything easy from Loan to CapitalStrategy
-// 4. figure out what is needed from a Loan instance, decide next move, context or data
-// 5. add getter methods for data that is needed from the context
-// 6. make loan delegate to capital strategy
+// 1. Create class CapitalStrategy
+// 2. Declare Capital in CapitalStrategy
+// 3. Copy Capital and anything easy from Loan to CapitalStrategy
+// 4. Figure out what is needed from a Loan instance, decide next move, context or data
+// 5. Add getter methods for data that is needed from the context
+// 6. Make Loan delegate to CapitalStrategy.Capital
+// 7. Move YearsTo, WeightedAverageDuration and Duration to CapitalStrategy
+// 8. Make Loan delegate to CapitalStrategy.Duration
+// 8. Remove unused code from Loan 
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
     public class CapitalStrategy
     {
+        private const int MillisPerDay = 86400000;
+        private const int DaysPerYear = 365;
+
         public double Capital(Loan loan)
         {
             if (!loan.GetExpiry().HasValue && loan.GetMaturity().HasValue)
@@ -47,6 +53,42 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         private static double UnusedRiskFactor(Loan loan)
         {
             return UnusedRiskFactors.ForRating(loan.GetRiskRating());
+        }
+
+        public double Duration(Loan loan)
+        {
+            if (!loan.GetExpiry().HasValue & loan.GetMaturity().HasValue)
+            {
+                return WeightedAverageDuration(loan);
+            }
+            else if (loan.GetExpiry().HasValue && !loan.GetMaturity().HasValue)
+            {
+                return YearsTo(loan.GetExpiry().Value, loan);
+            }
+
+            return 0.0;
+        }
+
+        private double WeightedAverageDuration(Loan loan)
+        {
+            var duration = 0.0;
+            var weightedAverage = loan.GetPayments().Sum(payment => YearsTo(payment.Date, loan) * payment.Amount);
+            var sumOfPayments = loan.GetPayments().Sum(payment => payment.Amount);
+
+            if (loan.GetCommitment() != 0.0)
+            {
+                duration = weightedAverage / sumOfPayments;
+            }
+
+            return duration;
+        }
+
+        private double YearsTo(DateTime endDate, Loan loan)
+        {
+            var beginDate = loan.GetToday().HasValue ? loan.GetToday().Value : loan.GetStart().Value;
+            var beginDateMilliseconds = new DateTimeOffset(beginDate).ToUnixTimeMilliseconds();
+            var endDateMilliseconds = new DateTimeOffset(endDate).ToUnixTimeMilliseconds();
+            return ((endDateMilliseconds - beginDateMilliseconds) / MillisPerDay) / DaysPerYear;
         }
     }
 
@@ -104,6 +146,21 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             return _riskRating;
         }
 
+        public List<Payment> GetPayments()
+        {
+            return _payments;
+        }
+
+        public DateTime? GetToday()
+        {
+            return _today;
+        }
+
+        public DateTime? GetStart()
+        {
+            return _start;
+        }
+
         internal void SetUnusedPercentage(double unusedPercentage)
         {
             _unusedPercentage = unusedPercentage;
@@ -111,16 +168,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public double Duration()
         {
-            if (!_expiry.HasValue & _maturity.HasValue)
-            {
-                return WeightedAverageDuration();
-            }
-            else if (_expiry.HasValue && !_maturity.HasValue)
-            {
-                return YearsTo(_expiry.Value);
-            }
-
-            return 0.0;
+            return new CapitalStrategy().Duration(this);
         }
 
         public double Capital()
@@ -146,38 +194,6 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         public double UnusedRiskAmount()
         {
             return _commitment - _outstanding;
-        }
-
-        private double WeightedAverageDuration()
-        {
-            var duration = 0.0;
-            var weightedAverage = _payments.Sum(payment => YearsTo(payment.Date) * payment.Amount);
-            var sumOfPayments = _payments.Sum(payment => payment.Amount);
-
-            if(_commitment != 0.0)
-            {
-                duration = weightedAverage / sumOfPayments;
-            }
-
-            return duration;
-        }
-
-        private double YearsTo(DateTime endDate)
-        {
-            var beginDate = _today ?? _start;
-            var beginDateMilliseconds = new DateTimeOffset(beginDate).ToUnixTimeMilliseconds();
-            var endDateMilliseconds = new DateTimeOffset(endDate).ToUnixTimeMilliseconds();
-            return ((endDateMilliseconds - beginDateMilliseconds) / MillisPerDay) / DaysPerYear;
-        }
-
-        private double RiskFactor()
-        {
-            return RiskFactors.ForRating(_riskRating);
-        }
-
-        private double UnusedRiskFactor()
-        {
-            return UnusedRiskFactors.ForRating(_riskRating);
         }
 
         public static Loan NewTermLoan(int commitment, DateTime start, DateTime maturity, int riskRating)
