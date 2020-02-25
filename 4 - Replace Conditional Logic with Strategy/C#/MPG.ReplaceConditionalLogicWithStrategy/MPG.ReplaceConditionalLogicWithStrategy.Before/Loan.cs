@@ -10,16 +10,48 @@ using System.Linq;
 // 6. Make Loan delegate to CapitalStrategy.Capital
 // 7. Move YearsTo, WeightedAverageDuration and Duration to CapitalStrategy
 // 8. Make Loan delegate to CapitalStrategy.Duration
-// 8. Remove unused code from Loan 
+// 9. Remove unused code from Loan 
+// 10. Extract CapitalStrategy to field
+// 11. Extract parameter on field initialization so that CapitalStrategy is passed in via constructor
+// 12. Create CapitalStrategyTermLoan, move WeightedAverageDuration to it
+// 13. Swap CapitalStrategy for CapitalStrategyTerm loan in factory method
+// 14. Delete WeightedAverageDuration from CapitalStrategy as it's only needed for term loans
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
+    public class CapitalStrategyTermLoan : CapitalStrategy
+    {
+        public override double Capital(Loan loan)
+        {
+            return loan.GetCommitment() * loan.Duration() * RiskFactor(loan);
+        }
+
+        public override double Duration(Loan loan)
+        {
+            return WeightedAverageDuration(loan);
+        }
+
+        private double WeightedAverageDuration(Loan loan)
+        {
+            var duration = 0.0;
+            var weightedAverage = loan.GetPayments().Sum(payment => YearsTo(payment.Date, loan) * payment.Amount);
+            var sumOfPayments = loan.GetPayments().Sum(payment => payment.Amount);
+
+            if (loan.GetCommitment() != 0.0)
+            {
+                duration = weightedAverage / sumOfPayments;
+            }
+
+            return duration;
+        }
+    }
+
     public class CapitalStrategy
     {
         private const int MillisPerDay = 86400000;
         private const int DaysPerYear = 365;
 
-        public double Capital(Loan loan)
+        public virtual double Capital(Loan loan)
         {
             if (!loan.GetExpiry().HasValue && loan.GetMaturity().HasValue)
             {
@@ -45,17 +77,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             return 0.0;
         }
 
-        private static double RiskFactor(Loan loan)
-        {
-            return RiskFactors.ForRating(loan.GetRiskRating());
-        }
-
-        private static double UnusedRiskFactor(Loan loan)
-        {
-            return UnusedRiskFactors.ForRating(loan.GetRiskRating());
-        }
-
-        public double Duration(Loan loan)
+        public virtual double Duration(Loan loan)
         {
             if (!loan.GetExpiry().HasValue & loan.GetMaturity().HasValue)
             {
@@ -67,6 +89,16 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             }
 
             return 0.0;
+        }
+
+        protected static double RiskFactor(Loan loan)
+        {
+            return RiskFactors.ForRating(loan.GetRiskRating());
+        }
+
+        protected static double UnusedRiskFactor(Loan loan)
+        {
+            return UnusedRiskFactors.ForRating(loan.GetRiskRating());
         }
 
         private double WeightedAverageDuration(Loan loan)
@@ -83,7 +115,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
             return duration;
         }
 
-        private double YearsTo(DateTime endDate, Loan loan)
+        protected double YearsTo(DateTime endDate, Loan loan)
         {
             var beginDate = loan.GetToday().HasValue ? loan.GetToday().Value : loan.GetStart().Value;
             var beginDateMilliseconds = new DateTimeOffset(beginDate).ToUnixTimeMilliseconds();
