@@ -113,9 +113,6 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
     public class Loan
     {
-        private const int MillisPerDay = 86400000;
-        private const int DaysPerYear = 365;
-
         private readonly double _commitment;
         private readonly int _riskRating;
         private readonly double _outstanding;
@@ -156,11 +153,6 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
         public DateTime? GetExpiry()
         {
             return _expiry;
-        }
-
-        public DateTime? GetMaturity()
-        {
-            return _maturity;
         }
 
         public int GetRiskRating()
