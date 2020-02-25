@@ -7,7 +7,7 @@ using System.Linq;
 // 3. copy Capital and anything easy from Loan to CapitalStrategy
 // 4. figure out what is needed from a Loan instance, decide next move, context or data
 // 5. add getter methods for data that is needed from the context
-
+// 6. make loan delegate to capital strategy
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 {
@@ -125,28 +125,7 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.Before
 
         public double Capital()
         {
-            if (!_expiry.HasValue && _maturity.HasValue)
-            {
-                // term loan
-                return _commitment * Duration() * RiskFactor();
-            }
-
-            if (_expiry.HasValue && !_maturity.HasValue)
-            {
-                if(GetUnusedPercentage() != 1.0)
-                {
-                    // advised line
-                    return _commitment * GetUnusedPercentage() * Duration() * RiskFactor();
-                }
-                else
-                {
-                    // revolver
-                    return (OutstandingRiskAmount() * Duration() * RiskFactor()) 
-                           + (UnusedRiskAmount() * Duration() * UnusedRiskFactor());
-                }
-            }
-
-            return 0.0;
+            return new CapitalStrategy().Capital(this);
         }
 
         public void Payment(double amount, DateTime date)
