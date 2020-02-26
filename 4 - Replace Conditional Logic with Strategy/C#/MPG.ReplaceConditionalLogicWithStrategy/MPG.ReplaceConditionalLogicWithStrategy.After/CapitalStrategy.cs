@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace MPG.ReplaceConditionalLogicWithStrategy.After
 {
@@ -23,20 +22,6 @@ namespace MPG.ReplaceConditionalLogicWithStrategy.After
         protected static double UnusedRiskFactor(Loan loan)
         {
             return UnusedRiskFactors.ForRating(loan.GetRiskRating());
-        }
-
-        private double WeightedAverageDuration(Loan loan)
-        {
-            var duration = 0.0;
-            var weightedAverage = loan.GetPayments().Sum(payment => YearsTo(payment.Date, loan) * payment.Amount);
-            var sumOfPayments = loan.GetPayments().Sum(payment => payment.Amount);
-
-            if (loan.GetCommitment() != 0.0)
-            {
-                duration = weightedAverage / sumOfPayments;
-            }
-
-            return duration;
         }
 
         protected double YearsTo(DateTime endDate, Loan loan)
