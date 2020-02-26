@@ -1,0 +1,27 @@
+{
+  "name": "replace-conditional-logic-with-strategy",
+  "version": "0.1.0",
+  "description": "Replace conditional logic with strategy",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns.git"
+  },
+  "author": "Manchester Patterns Group",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns/issues"
+  },
+  "homepage": "https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.8.4"
+  }
+}
