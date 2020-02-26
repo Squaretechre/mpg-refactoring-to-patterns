@@ -5,7 +5,7 @@ using System.Collections.Generic;
 // 1. Create class CapitalStrategy
 // 2. Declare Capital in CapitalStrategy
 // 3. Copy Capital and anything easy from Loan to CapitalStrategy
-// 4. Figure out what is needed from a Loan instance, decide next move, context or data
+// 4. Figure out what is needed from a Loan instance, decide next move use context object or data parameters?
 // 5. Add getter methods for data that is needed from the context
 // 6. Make Loan delegate to CapitalStrategy.Capital
 // 7. Move YearsTo, WeightedAverageDuration and Duration to CapitalStrategy
