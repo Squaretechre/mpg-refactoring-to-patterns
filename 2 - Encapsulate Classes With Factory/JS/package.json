@@ -1,0 +1,38 @@
+{
+  "name": "encapsulate-classes-with-factory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns/issues"
+  },
+  "homepage": "https://github.com/Squaretechre/manchester-patterns-group-refactoring-to-patterns#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.8.4",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^25.1.0",
+    "eslint": "5.5.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.14.0",
+    "jest": "^25.1.0",
+    "node-sass": "^4.9.3",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "dependencies": {
+    "babel-eslint": "^10.0.3",
+    "babel-preset-env": "^1.7.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.18.0"
+  }
+}
