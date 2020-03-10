@@ -1,6 +1,7 @@
 import Payment from "./Payment";
-import RiskFactors from "./RiskFactors";
-import UnusedRiskFactors from "./UnusedRiskFactors";
+import CapitalStrategyTermLoan from "./CapitalStrategyTermLoan";
+import CapitalStrategyRevolver from "./CapitalStrategyRevolver";
+import CapitalStrategyAdvisedLine from "./CapitalStrategyAdvisedLine";
 
 export default class Loan {
   constructor (
@@ -10,10 +11,9 @@ export default class Loan {
     maturity,
     expiry,
     start,
-    today
+    today,
+    capitalStrategy
   ) {
-    this.millisPerDay = 86400000
-    this.daysPerYear = 365
     this._payments = []
     this._commitment = commitment
     this._outstanding = outstanding
@@ -23,92 +23,73 @@ export default class Loan {
     this._start = start
     this._today = today
     this._unusedPercentage = 1
+    this._capitalStrategy = capitalStrategy
   }
 
   setUnusedPercentage(value) {
     this._unusedPercentage = value
   }
 
+  getUnusedPercentage() {
+    return this._unusedPercentage;
+  }
+
   duration () {
-    if (!this._expiry && this._maturity) {
-      return this.weightedAverageDuration()
-    } else if (this._expiry && !this._maturity) {
-      return this.yearsTo(this._expiry)
-    } else {
-      return 0
-    }
+    return this._capitalStrategy.duration(this);
   }
 
   capital() {
-    if (!this._expiry && this._maturity) {
-      // term loan
-      return this._commitment * this.duration() * this.riskFactor()
-    }
+    return this._capitalStrategy.capital(this);
+  }
 
-    if (this._expiry && !this._maturity) {
-      if (this._unusedPercentage !== 1.0) {
-        // advised line
-        return this._commitment * this._unusedPercentage * this.duration() * this.riskFactor()
-      } else {
-        // revolver
-        return (this._outstanding * this.duration() * this.riskFactor())
-          + (this.unusedRiskAmount() * this.duration() * this.unusedRiskFactor())
-      }
-    }
-
-    return 0
+  getExpiry() {
+    return this._expiry;
   }
 
   payment (amount, date) {
     this._payments.push(new Payment(amount, date))
   }
 
-  weightedAverageDuration () {
-    let duration = 0
-    const weightedAverage = this._payments
-      .map(payment => this.yearsTo(payment.date) * payment.amount)
-      .reduce((a, b) => a + b)
-
-    const sumOfPayments = this._payments
-      .map(payment => payment.amount)
-      .reduce((a, b) => a + b)
-
-    if (this._commitment !== 0.0) {
-      duration = weightedAverage / sumOfPayments
-    }
-
-    return duration
+  getPayments() {
+    return this._payments;
   }
 
-  yearsTo (endDate) {
-    const beginDate = this._today || this._start
-    return Math.floor(((endDate - beginDate) / this.millisPerDay / this.daysPerYear))
+  getStart() {
+    return this._start;
+  }
+
+  getToday() {
+    return this._today;
   }
 
   unusedRiskAmount () {
-    return this._commitment - this._outstanding
+    return this.getCommitment() - this.getOutstandingRiskAmount()
   }
 
-  riskFactor () {
-    return RiskFactors.ForRating(this._riskRating)
+  getOutstandingRiskAmount() {
+    return this._outstanding;
   }
 
-  unusedRiskFactor () {
-    return UnusedRiskFactors.ForRating(this._riskRating)
+  getCommitment() {
+    return this._commitment;
+  }
+
+  getRiskRating() {
+    return this._riskRating;
   }
 
   static NewTermLoan (commitment, start, maturity, riskRating) {
-    return new Loan(commitment, commitment, riskRating, maturity, undefined, start, undefined)
+    return new Loan(commitment, commitment, riskRating, maturity, undefined, start, undefined, new CapitalStrategyTermLoan())
   }
 
   static NewRevolver (commitment, start, expiry, riskRating) {
-    return new Loan(commitment, 0, riskRating, undefined, expiry, start, undefined)
+    return new Loan(commitment, 0, riskRating, undefined, expiry, start, undefined, new CapitalStrategyRevolver())
   }
 
   static NewAdvisedLine (commitment, start, expiry, riskRating) {
     if (riskRating > 3) return undefined
 
-    const advisedLine = new Loan(commitment, 0, riskRating, undefined, expiry, start, undefined)
+    const advisedLine = new Loan(commitment, 0, riskRating, undefined, expiry, start, undefined, new CapitalStrategyAdvisedLine())
     advisedLine.setUnusedPercentage(0.1)
 
     return advisedLine

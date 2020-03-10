@@ -1,6 +1,6 @@
 import Loan from "./Loan"
 
-describe('Capital calculation', () => {
+describe('Loan', () => {
   const loanAmount = 10000
   const highRiskRating = 1
 
