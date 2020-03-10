@@ -1,6 +1,5 @@
 from datetime import datetime
 from unittest import TestCase
-
 from after.loan import Loan
 
 

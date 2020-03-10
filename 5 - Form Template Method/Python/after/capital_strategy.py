@@ -1,7 +1,5 @@
 from abc import abstractmethod
-
 from dateutil.relativedelta import relativedelta
-
 from after.risk_factors import RiskFactors
 from after.unused_risk_factors import UnusedRiskFactors
 
