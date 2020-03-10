@@ -1,7 +1,7 @@
-from before.capital_strategy_advised_line import CapitalStrategyAdvisedLine
-from before.capital_strategy_revolver import CapitalStrategyRevolver
-from before.capital_strategy_term_loan import CapitalStrategyTermLoan
-from before.payment import Payment
+from after.capital_strategy_advised_line import CapitalStrategyAdvisedLine
+from after.capital_strategy_revolver import CapitalStrategyRevolver
+from after.capital_strategy_term_loan import CapitalStrategyTermLoan
+from after.payment import Payment
 
 
 class Loan:

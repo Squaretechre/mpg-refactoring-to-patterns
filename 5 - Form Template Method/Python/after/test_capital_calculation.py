@@ -1,6 +1,7 @@
-from unittest import TestCase
 from datetime import datetime
-from before.loan import Loan
+from unittest import TestCase
+
+from after.loan import Loan
 
 
 class TestCapitalCalculation(TestCase):

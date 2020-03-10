@@ -1,13 +1,18 @@
 from abc import abstractmethod
-from before.risk_factors import RiskFactors
-from before.unused_risk_factors import UnusedRiskFactors
+
 from dateutil.relativedelta import relativedelta
+
+from after.risk_factors import RiskFactors
+from after.unused_risk_factors import UnusedRiskFactors
 
 
 class CapitalStrategy:
     @abstractmethod
-    def capital(self, loan):
+    def risk_amount_for(self, loan):
         raise NotImplementedError
+
+    def capital(self, loan):
+        return self.risk_amount_for(loan) * self.duration(loan) * self.risk_factor_for(loan)
 
     def duration(self, loan):
         return self.years_to(loan.get_expiry(), loan)

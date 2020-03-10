@@ -1,12 +1,12 @@
-from before.capital_strategy import CapitalStrategy
+from after.capital_strategy import CapitalStrategy
 
 
 class CapitalStrategyTermLoan(CapitalStrategy):
     def __init__(self):
         CapitalStrategy.__init__(self)
 
-    def capital(self, loan):
-        return loan.get_commitment() * self.duration(loan) * self.risk_factor_for(loan)
+    def risk_amount_for(self, loan):
+        return loan.get_commitment()
 
     def duration(self, loan):
         return self.weighted_average_duration(loan)

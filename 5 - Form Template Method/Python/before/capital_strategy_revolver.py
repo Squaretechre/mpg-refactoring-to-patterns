@@ -1,4 +1,4 @@
-from capital_strategy import CapitalStrategy
+from before.capital_strategy import CapitalStrategy
 
 
 class CapitalStrategyRevolver(CapitalStrategy):
