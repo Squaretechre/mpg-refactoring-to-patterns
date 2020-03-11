@@ -5,11 +5,6 @@
 
     public class CapitalStrategyTermLoan : CapitalStrategy
     {
-        public override double Capital(Loan loan)
-        {
-            return loan.GetCommitment() * Duration(loan) * RiskFactor(loan);
-        }
-
         public override double Duration(Loan loan)
         {
             return WeightedAverageDuration(loan);
