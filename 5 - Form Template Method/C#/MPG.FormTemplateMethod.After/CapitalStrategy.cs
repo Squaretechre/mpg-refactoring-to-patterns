@@ -7,8 +7,6 @@
         private const int MillisPerDay = 86400000;
         private const int DaysPerYear = 365;
 
-        public abstract double Capital(Loan loan);
-
         public virtual double Duration(Loan loan)
         {
             return YearsTo(loan.GetExpiry().Value, loan);
@@ -35,6 +33,12 @@
         protected virtual double RiskAmountFor(Loan loan)
         {
             return loan.GetCommitment();
+        }
+
+        public virtual double Capital(Loan loan)
+        {
+            // TODO - riskAmountFor * duration * riskFactor is common in CapitalStrategyAdvisedLine & CapitalStrategyTermLoan
+            return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
         }
     }
 }
