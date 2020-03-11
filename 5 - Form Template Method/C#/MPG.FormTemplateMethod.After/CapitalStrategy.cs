@@ -9,14 +9,14 @@
 
         public abstract double Capital(Loan loan);
 
-        protected static double RiskFactor(Loan loan)
-        {
-            return RiskFactors.ForRating(loan.GetRiskRating());
-        }
-
         public virtual double Duration(Loan loan)
         {
             return YearsTo(loan.GetExpiry().Value, loan);
+        }
+
+        protected double RiskFactor(Loan loan)
+        {
+            return RiskFactors.ForRating(loan.GetRiskRating());
         }
 
         protected double UnusedRiskFactor(Loan loan)
