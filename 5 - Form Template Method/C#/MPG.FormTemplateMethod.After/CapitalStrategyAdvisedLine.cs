@@ -8,7 +8,7 @@
             return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
         }
 
-        private double RiskAmountFor(Loan loan)
+        protected override double RiskAmountFor(Loan loan)
         {
             return loan.GetCommitment() * loan.GetUnusedPercentage();
         }

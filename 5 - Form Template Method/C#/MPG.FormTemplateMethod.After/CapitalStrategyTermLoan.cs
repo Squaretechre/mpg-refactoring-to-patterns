@@ -11,11 +11,6 @@
             return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
         }
 
-        private double RiskAmountFor(Loan loan)
-        {
-            return loan.GetCommitment();
-        }
-
         public override double Duration(Loan loan)
         {
             return WeightedAverageDuration(loan);

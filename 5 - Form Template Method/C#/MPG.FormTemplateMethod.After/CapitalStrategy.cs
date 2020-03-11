@@ -31,5 +31,10 @@
             var endDateMilliseconds = new DateTimeOffset(endDate).ToUnixTimeMilliseconds();
             return ((endDateMilliseconds - beginDateMilliseconds) / MillisPerDay) / DaysPerYear;
         }
+
+        protected virtual double RiskAmountFor(Loan loan)
+        {
+            return loan.GetCommitment();
+        }
     }
 }
