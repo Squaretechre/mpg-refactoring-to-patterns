@@ -9,17 +9,12 @@
 
         private double Outstanding(Loan loan)
         {
-            return x(loan) * Duration(loan) * RiskFactor(loan);
-        }
-
-        private double x(Loan loan)
-        {
-            return loan.OutstandingRiskAmount();
+            return base.Capital(loan);
         }
 
         protected override double RiskAmountFor(Loan loan)
         {
-            return x(loan);
+            return loan.OutstandingRiskAmount();
         }
 
         private double Unused(Loan loan)
