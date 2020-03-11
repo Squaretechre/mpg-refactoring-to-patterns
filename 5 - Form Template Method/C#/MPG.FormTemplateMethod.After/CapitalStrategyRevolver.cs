@@ -4,12 +4,7 @@
     {
         public override double Capital(Loan loan)
         {
-            return Outstanding(loan) + Unused(loan);
-        }
-
-        private double Outstanding(Loan loan)
-        {
-            return base.Capital(loan);
+            return base.Capital(loan) + Unused(loan);
         }
 
         protected override double RiskAmountFor(Loan loan)
