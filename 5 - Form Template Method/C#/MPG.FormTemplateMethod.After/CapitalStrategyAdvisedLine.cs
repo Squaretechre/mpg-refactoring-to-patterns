@@ -4,8 +4,13 @@
     {
         public override double Capital(Loan loan)
         {
-            // TODO - x * duration * riskFactor is common in CapitalStrategyAdvisedLine & CapitalStrategyTermLoan
-            return loan.GetCommitment() * loan.GetUnusedPercentage() * Duration(loan) * RiskFactor(loan);
+            // TODO - riskAmountFor * duration * riskFactor is common in CapitalStrategyAdvisedLine & CapitalStrategyTermLoan
+            return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
+        }
+
+        private double RiskAmountFor(Loan loan)
+        {
+            return loan.GetCommitment() * loan.GetUnusedPercentage();
         }
     }
 }
