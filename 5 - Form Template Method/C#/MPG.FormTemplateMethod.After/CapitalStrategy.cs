@@ -37,7 +37,6 @@
 
         public virtual double Capital(Loan loan)
         {
-            // TODO - riskAmountFor * duration * riskFactor is common in CapitalStrategyAdvisedLine & CapitalStrategyTermLoan
             return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
         }
     }

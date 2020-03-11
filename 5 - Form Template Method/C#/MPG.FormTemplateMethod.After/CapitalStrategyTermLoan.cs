@@ -5,12 +5,6 @@
 
     public class CapitalStrategyTermLoan : CapitalStrategy
     {
-        public override double Capital(Loan loan)
-        {
-            // TODO - riskAmountFor * duration * riskFactor is common in CapitalStrategyAdvisedLine & CapitalStrategyTermLoan
-            return RiskAmountFor(loan) * Duration(loan) * RiskFactor(loan);
-        }
-
         public override double Duration(Loan loan)
         {
             return WeightedAverageDuration(loan);
