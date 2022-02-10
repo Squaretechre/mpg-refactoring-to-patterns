@@ -24,7 +24,7 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14.0",
     "jest": "^25.1.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "regenerator-runtime": "^0.12.1"
   },
   "dependencies": {
